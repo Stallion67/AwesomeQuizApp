@@ -3,6 +3,7 @@ package com.okellomwaka.myawesomequiz;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,9 @@ private  static final int REQUEST_CODE_QUIZ=1;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_strating_screen);
+
+        textViewHighscore=findViewById(R.id.text_view_highscore);
+        loadHighscore();
 
         Button buttonStartQuiz = findViewById(R.id.button_start_quiz);
         buttonStartQuiz.setOnClickListener(new View.OnClickListener() {
@@ -46,5 +50,19 @@ private  static final int REQUEST_CODE_QUIZ=1;
                 }
             }
         }
+    }
+
+    private void loadHighscore() {
+        SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        highscore = prefs.getInt(KEY_HIGHSCORE, 0);
+        textViewHighscore.setText("Highscore: " + highscore);
+    }
+    private void updateHighscore(int highscoreNew) {
+        highscore = highscoreNew;
+        textViewHighscore.setText("Highscore: " + highscore);
+        SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(KEY_HIGHSCORE, highscore);
+        editor.apply();
     }
 }

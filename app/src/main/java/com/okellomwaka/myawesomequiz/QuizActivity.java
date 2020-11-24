@@ -42,6 +42,8 @@ public static final String EXTRA_SCORE="extraScore";
     private Question currentQuestion;
     private int score;
     private boolean answered; //cHECKS IF THE QUSTION WAS ANSWERED
+    private long backPressedTime;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,4 +147,17 @@ public static final String EXTRA_SCORE="extraScore";
  setResult(RESULT_OK,resultIntent);
         finish();
     }
+
+    //overiting back butt
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            finishQuiz();
+        } else {
+            Toast.makeText(this, "Press back again to finish", Toast.LENGTH_SHORT).show();
+        }
+        backPressedTime = System.currentTimeMillis();
+    }
+
 }
