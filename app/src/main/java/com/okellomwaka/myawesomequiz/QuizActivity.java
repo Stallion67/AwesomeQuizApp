@@ -3,6 +3,7 @@ package com.okellomwaka.myawesomequiz;
 import androidx.appcompat.app.AppCompatActivity;
 //import android.support.v7.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,6 +18,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
+ // For Sending Back the Score to Starting Activity
+public static final String EXTRA_SCORE="extraScore";
+
+
     private TextView textViewQuestion;
     private TextView textViewScore;
     private TextView textViewQuestionCount;
@@ -27,6 +32,7 @@ public class QuizActivity extends AppCompatActivity {
     private RadioButton rb3;
     private Button buttonConfirmNext;
 
+    //cHANGING  THE cOLOUR AFTER CLICK TO CORRECT OR wRONG
     private ColorStateList textColorDefaultRb;
 
     private List<Question> questionList;
@@ -35,7 +41,7 @@ public class QuizActivity extends AppCompatActivity {
     private int questionCountTotal;
     private Question currentQuestion;
     private int score;
-    private boolean answered;
+    private boolean answered; //cHECKS IF THE QUSTION WAS ANSWERED
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +58,7 @@ public class QuizActivity extends AppCompatActivity {
         rb3 = findViewById(R.id.radio_button3);
         buttonConfirmNext = findViewById(R.id.button_confirm_next);
 
-        textColorDefaultRb = rb1.getTextColors();
+        textColorDefaultRb = rb1.getTextColors(); //sETTING THE DEFUALT COLOR OF RADIO BUTTON
 
         QuizDbHelper dbHelper = new QuizDbHelper(this);
         questionList = dbHelper.getAllQuestions();
@@ -134,6 +140,9 @@ public class QuizActivity extends AppCompatActivity {
 
 
     private void finishQuiz() {
+ Intent resultIntent= new Intent();
+ resultIntent.putExtra(EXTRA_SCORE,score);
+ setResult(RESULT_OK,resultIntent);
         finish();
     }
 }
